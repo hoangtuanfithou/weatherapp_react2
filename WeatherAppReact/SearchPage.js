@@ -75,11 +75,13 @@ class SearchPage extends Component {
               <TextInput
                 style={styles.searchInput}
                 placeholder='Search via name or postcode'/> 
-                <TouchableHighlight style={styles.button}>
+                <TouchableHighlight style={styles.button}
+                    underlayColor='#99d9f4'>
                     <Text style={styles.buttonText}>Go</Text>
                 </TouchableHighlight>
                 </View>
-                <TouchableHighlight style={styles.button}>
+                <TouchableHighlight style={styles.button}
+                    underlayColor='#99d9f4'>
                     <Text style={styles.buttonText}>Location</Text>
                 </TouchableHighlight>
 
