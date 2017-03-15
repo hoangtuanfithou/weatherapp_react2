@@ -191,26 +191,13 @@ class SearchPage extends Component {
 
 var NavigationBarRouteMapper = {
   LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
-        <Text style={{color: 'white', margin: 10,}}>
-          返回
-        </Text>
-      </TouchableOpacity>
-    );
+    return null;
   },
   RightButton(route, navigator, index, navState) {
     return null;
   },
   Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          主页
-        </Text>
-      </TouchableOpacity>
-    );
+    return null;
   }
 };
 

@@ -43,6 +43,7 @@ class SearchResults extends Component {
           <Text style = {styles.description}>
             Temperature: {this.props.data.weather.temp_C} °C
          </Text>
+         
          <Text style = {styles.description}>
             Weather description: {this.props.data.weather.weatherDesc[0].value}
          </Text>
