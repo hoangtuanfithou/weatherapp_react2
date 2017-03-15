@@ -8,6 +8,8 @@ import {
   TouchableHighlight,
   ListView,
   Text,
+  Navigator,
+  TouchableOpacity
 } from 'react-native'
 
 var styles = StyleSheet.create({
@@ -30,24 +32,58 @@ var styles = StyleSheet.create({
 
 class SearchResults extends Component {
 
-  render() {
+  renderScene(route, navigator) {
     return (
         <View style = {styles.container}>  
         <Image 
           style={styles.image}
           resizeMode={"contain"}
-          source={{uri:this.props.weather.weatherIconUrl[0].value}}/>
+          source={{uri:this.props.data.weather.weatherIconUrl[0].value}}/>
         
           <Text style = {styles.description}>
-            Temperature: {this.props.weather.temp_C} °C
+            Temperature: {this.props.data.weather.temp_C} °C
          </Text>
          <Text style = {styles.description}>
-            Weather description: {this.props.weather.weatherDesc[0].value}
+            Weather description: {this.props.data.weather.weatherDesc[0].value}
+         </Text>
+
+          <Text style = {styles.description}>
+            Test
          </Text>
         </View>
     );
   }
  
+  render() {
+    return (
+      <Navigator
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
+                routeMapper={NavigationBarRouteMapper} />
+          } />
+    );
+  }
+
 }
+
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+    return null;
+  },
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+  Title(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+          Weather Search
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+};
 
 module.exports = SearchResults;
