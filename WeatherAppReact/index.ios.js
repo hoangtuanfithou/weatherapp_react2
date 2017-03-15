@@ -69,7 +69,7 @@ class Project extends React.Component {
           <ReactNative.NavigatorIOS style={styles.container}
             initialRoute = {
                 {
-                  title: 'Property Finder',
+                  title: 'Weather Search',
                   component: SearchPage,
                 }
             }/>

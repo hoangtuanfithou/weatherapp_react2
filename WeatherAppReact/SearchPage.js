@@ -64,29 +64,26 @@ var styles = StyleSheet.create({
   }
 });
 
-function urlForQueryAndPage(key, value, pageNumber) {
+function urlForQueryAndPage(query) {
   var data = {
-      country: 'uk',
-      pretty: '1',
-      encoding: 'json',
-      listing_type: 'buy',
-      action: 'search_listings',
-      page: pageNumber
+      key: 'vzkjnx2j5f88vyn5dhvvqkzc',
+      fx: '1',
+      format: 'json'
   };
-  data[key] = value;
+  data['q'] = query;
 
   var querystring = Object.keys(data)
     .map(key => key + '=' + encodeURIComponent(data[key]))
     .join('&');
 
-  return 'http://api.nestoria.co.uk/api?' + querystring;
+  return 'http://api.worldweatheronline.com/free/v1/weather.ashx?' + querystring;
 };
 
 class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchString: 'london',
+      searchString: 'Hanoi',
       isLoading: false,
       message: ''
     };
@@ -104,7 +101,7 @@ class SearchPage extends Component {
 
     fetch(query)
     .then(response => response.json())
-    .then(json => this._handleResponse(json.response))
+    .then(json => this._handleResponse(json))
     .catch(error =>
        this.setState({
         isLoading: false,
@@ -112,46 +109,32 @@ class SearchPage extends Component {
      }));
   }
 
-  _handleResponse(response) {
+  _handleResponse(json) {
     this.setState({ isLoading: false , message: '' });
-    if (response.application_response_code.substr(0, 1) === '1') {
+    // if (response.application_response_code.substr(0, 1) === '1') {
       this.props.navigator.push({
-        title: 'Results',
+        title: this.state.searchString,
         component: SearchResults,
-        passProps: {listings: response.listings}
+        passProps: {weather: json.data.current_condition[0]}
       });
-    } else {
-      this.setState({ message: 'Location not recognized; please try again.'});
-    }
+    // } else {
+    //   this.setState({ message: 'Location not recognized; please try again.'});
+    // }
   }
 
   onSearchPressed() {
-    var query = urlForQueryAndPage('place_name', this.state.searchString, 1);
+    var query = urlForQueryAndPage(this.state.searchString);
+    console.log('SearchPage.render ' + query);
     this._executeQuery(query);
-  }
-
-  onLocationPressed() {
-    navigator.geolocation.getCurrentPosition(
-      location => {
-        var search = location.coords.latitude + ',' + location.coords.longitude;
-        this.setState({ searchString: search });
-        var query = urlForQueryAndPage('centre_point', search, 1);
-        this._executeQuery(query);
-      },
-      error => {
-        this.setState({
-          message: 'There was a problem with obtaining your location: ' + error
-        });
-      });
   }
 
   render() {
     console.log('SearchPage.render');
 
-    var spinner = this.state.isLoading ?
+    /*var spinner = this.state.isLoading ?
     ( <ActivityIndicator
         size='large'/> ) :
-    ( <View/>);
+    ( <View/>);*/
 
     return (
       <View style={styles.container}>
@@ -165,7 +148,9 @@ class SearchPage extends Component {
         <View style={styles.flowRight}>
           <TextInput
             style={styles.searchInput}
-            placeholder='Search via name or postcode'/>
+            value={this.state.searchString}
+            onChange={this.onSearchTextChanged.bind(this)}
+            placeholder='Search via city name'/>
           <TouchableHighlight style={styles.button}
               underlayColor='#99d9f4'>
             <Text
@@ -177,7 +162,7 @@ class SearchPage extends Component {
         </View>
 
         <Image source={require('./Resources/weather.png')} style={styles.image}/>
-        {spinner}
+          {/*{spinner}*/}
         <Text style={styles.description}>{this.state.message}</Text>
       </View>
     );

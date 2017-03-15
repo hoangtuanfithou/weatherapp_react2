@@ -10,14 +10,31 @@ import {
   Text
 } from 'react-native';
 
+var styles = StyleSheet.create({
+  description: {
+    marginBottom: 20,
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#656565'
+  },
+  container: {
+    padding: 30,
+    marginTop: 65,
+    alignItems: 'center'
+  }
+});
+
 class SearchResults extends Component {
- 
+   
   constructor(props) {
     super(props);
-    var dataSource = new ListView.DataSource(
-      {rowHasChanged: (r1, r2) => r1.lister_url !== r2.lister_url});
+    // var dataSource = new ListView.DataSource(
+    //   {rowHasChanged: (r1, r2) => r1.lister_url !== r2.lister_url});
+    // this.state = {
+    //   dataSource: dataSource.cloneWithRows(this.props.listings)
+    // };
     this.state = {
-      dataSource: dataSource.cloneWithRows(this.props.listings)
+      observation_time: this.props.weather
     };
   }
  
@@ -26,7 +43,8 @@ class SearchResults extends Component {
       <TouchableHighlight
           underlayColor='#dddddd'>
         <View>
-          <Text>{rowData.title}</Text>
+          {/*<Text>{rowData.title}</Text>*/}
+          <Text> Test Text </Text>
         </View>
       </TouchableHighlight>
     );
@@ -34,9 +52,17 @@ class SearchResults extends Component {
  
   render() {
     return (
-      <ListView
+      /*<ListView
         dataSource={this.state.dataSource}
-        renderRow={this.renderRow.bind(this)}/>
+        renderRow={this.renderRow.bind(this)}/>*/
+        <View style = {styles.container}>  
+          <Text style = {styles.description}>
+            Temperature: {this.props.weather.temp_C} C
+         </Text>
+         <Text style = {styles.description}>
+            Weather description: {this.props.weather.weatherDesc[0].value}
+         </Text>
+        </View>
     );
   }
  
