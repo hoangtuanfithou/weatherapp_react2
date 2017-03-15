@@ -8,7 +8,8 @@ import {
   View,
   TouchableHighlight,
   ActivityIndicator,
-  Image
+  Image,
+  ActivityIndicatorIOS,
 } from 'react-native';
 
 var SearchResults = require('./SearchResults');
@@ -111,15 +112,15 @@ class SearchPage extends Component {
 
   _handleResponse(json) {
     this.setState({ isLoading: false , message: '' });
-    // if (response.application_response_code.substr(0, 1) === '1') {
+    if (!json.data.error) {
       this.props.navigator.push({
         title: this.state.searchString,
         component: SearchResults,
         passProps: {weather: json.data.current_condition[0]}
       });
-    // } else {
-    //   this.setState({ message: 'Location not recognized; please try again.'});
-    // }
+    } else {
+      this.setState({ message: 'Location not recognized; please try again.'});
+    }
   }
 
   onSearchPressed() {
@@ -131,11 +132,14 @@ class SearchPage extends Component {
   render() {
     console.log('SearchPage.render');
 
-    /*var spinner = this.state.isLoading ?
-    ( <ActivityIndicator
-        size='large'/> ) :
-    ( <View/>);*/
-
+    var spinner = this.state.isLoading ?
+      ( <ActivityIndicatorIOS
+         animating={true}
+         size={ 'large' }
+         color={ 'black' }
+       />) :
+      ( <View/>);
+   
     return (
       <View style={styles.container}>
 
@@ -162,7 +166,7 @@ class SearchPage extends Component {
         </View>
 
         <Image source={require('./Resources/weather.png')} style={styles.image}/>
-          {/*{spinner}*/}
+        {spinner}
         <Text style={styles.description}>{this.state.message}</Text>
       </View>
     );
