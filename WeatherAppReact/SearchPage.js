@@ -10,6 +10,8 @@ import {
   ActivityIndicator,
   Image,
   ActivityIndicatorIOS,
+  Navigator,
+  TouchableOpacity
 } from 'react-native';
 
 var SearchResults = require('./SearchResults');
@@ -114,9 +116,11 @@ class SearchPage extends Component {
     this.setState({ isLoading: false , message: '' });
     if (!json.data.error) {
       this.props.navigator.push({
+        id: 'SearchResults',
         title: this.state.searchString,
         component: SearchResults,
-        passProps: {weather: json.data.current_condition[0]}
+        data: {weather: json.data.current_condition[0]},
+        passProps: {data: {weather: json.data.current_condition[0]}}
       });
     } else {
       this.setState({ message: 'Location not recognized; please try again.'});
@@ -130,6 +134,18 @@ class SearchPage extends Component {
   }
 
   render() {
+    return (
+      <Navigator
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
+                routeMapper={NavigationBarRouteMapper} />
+          } />
+    );
+  }
+
+  renderScene(route, navigator) {
     console.log('SearchPage.render');
 
     var spinner = this.state.isLoading ?
@@ -172,5 +188,30 @@ class SearchPage extends Component {
     );
   }
 }
+
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
+          onPress={() => navigator.parentNavigator.pop()}>
+        <Text style={{color: 'white', margin: 10,}}>
+          返回
+        </Text>
+      </TouchableOpacity>
+    );
+  },
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+  Title(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+          主页
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+};
 
 module.exports = SearchPage;
