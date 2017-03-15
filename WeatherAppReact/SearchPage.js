@@ -120,7 +120,7 @@ class SearchPage extends Component {
         title: this.state.searchString,
         component: SearchResults,
         data: {weather: json.data.current_condition[0]},
-        passProps: {weather: json.data.current_condition[0]}
+        passProps: {data: {weather: json.data.current_condition[0]}}
       });
     } else {
       this.setState({ message: 'Location not recognized; please try again.'});

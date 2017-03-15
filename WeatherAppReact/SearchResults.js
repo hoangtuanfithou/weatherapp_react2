@@ -47,9 +47,6 @@ class SearchResults extends Component {
             Weather description: {this.props.data.weather.weatherDesc[0].value}
          </Text>
 
-          <Text style = {styles.description}>
-            Test
-         </Text>
         </View>
     );
   }
@@ -69,8 +66,15 @@ class SearchResults extends Component {
 }
 
 var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return null;
+    LeftButton(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
+          onPress={() => navigator.parentNavigator.pop()}>
+        <Text style={{color: 'white', margin: 10,}}>
+          Back
+        </Text>
+      </TouchableOpacity>
+    );
   },
   RightButton(route, navigator, index, navState) {
     return null;
